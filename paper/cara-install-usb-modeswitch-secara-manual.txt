@@ -1,0 +1,61 @@
+Cara Install Software USB Modeswitch Secara Manual
+
+Jadi kegunaan usb_modeswitch adalah untuk memindah dari storage mode ke network card mode pada modem usb yang saya gunakan, di package manager synaptics usb_modeswitch hanya ada versi 2.2.5 versi 2015 saja sedangkan saat ini sudah menjadi versi 2.5.1 2017 yang menurut saya sudah mempunyai banyak tambahan konfigurasi, nah dari konfigurasi usb_modeswitch inilah kita bisa mengkoneksikan internet menggunakan modem tanpa mempunyai kendala seperti modem tidak terdetek dan di lsusb muncul storage mode bukan networkcard mode.
+
+Hal pertama yang harus dilakukan adalah mendownload software usb_modeswitch telebih dahulu.
+
+$ cd Downloads
+$ wget http://www.draisberghof.de/usb_modeswitch/usb-modeswitch-2.5.1.tar.bz2
+
+Lalu kita harus extract file usb_modeswitch tersebut dengan cara.
+
+$ tar -xf usb-modeswitch-2.5.1.tar.bz2
+
+Jika sudah di extract silahkan move ke directory usb_modeswitch dengan cara.
+
+$ cd usb-modeswitch-2.5.1
+
+Harap diketahui bahwa usb_modeswitch membutuhkan libusb-1.x untuk melakukan proses instalasi dan beberapa library dari bahasa pemrograman C.
+
+$ sudo apt-get install libusb-1.0
+$ sudo apt-get install libc6-dev
+
+Nah. beberapa paket diatas adalah yang wajib di download agar konfigurasi dan penginstalam usb_modeswitch berjalan secara lancar. Lanjut ke proses instalasi yaitu eksekusi command berikut.
+
+$ sudo make install
+
+Selesai, jika outputnya muncul seperti ini maka usb_modeswitch sudah terupgrade ke versi terbaru.
+
+------------------------------------------------------
+sed 's_!/usr/bin/tclsh_!'"/usr/bin/tclsh"'_' < usb_modeswitch.tcl > usb_modeswitch_dispatcher
+install -D --mode=755 usb_modeswitch /usr/sbin/usb_modeswitch
+install -D --mode=755 usb_modeswitch.sh /lib/udev/usb_modeswitch
+install -D --mode=644 usb_modeswitch.conf /etc/usb_modeswitch.conf
+install -D --mode=644 usb_modeswitch.1 /usr/share/man/man1/usb_modeswitch.1
+install -D --mode=644 usb_modeswitch_dispatcher.1 /usr/share/man/man1/usb_modeswitch_dispatcher.1
+install -D --mode=755 usb_modeswitch_dispatcher /usr/sbin/usb_modeswitch_dispatcher
+install -d /var/lib/usb_modeswitch
+test -d /etc/init -a -e /sbin/initctl && install --mode=644 usb-modeswitch-upstart.conf /etc/init || test 1
+test -d /etc/systemd/system -a \( -e /usr/bin/systemctl -o -e /bin/systemctl \) && install --mode=644 usb_modeswitch@.service /etc/systemd/system || test 1
+----------------------------------------------------------------------
+
+Silahkan cek versi usb_modeswitch dengan cara.
+
+$ sudo usb_modeswitch -e
+
+Maka akan muncul seperti ini.
+
+----------------------------------------------------------------
+ * usb_modeswitch: handle USB devices with multiple modes
+ * Version 2.5.1 (C) Josua Dietze 2017
+ * Based on libusb1/libusbx
+
+ ! PLEASE REPORT NEW CONFIGURATIONS !
+------------------------------------------------------------------
+
+Selesai.
+
+Author  : Agus Purwantoro (aguxai)
+Date    : 27/09/2017
+Version : 1.0
+License : Free Document License (FDL). See more at https://www.gnu.org/licenses/fdl-1.3.en.html
